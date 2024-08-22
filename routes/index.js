@@ -1,9 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express")
+const router = express.Router()
+const sequelize = require("../helpers/bd")
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const AutorService = require("../servico/AutorService")
+const CategoriaService = require("../servico/CategoriaService")
+const ClienteService = require("../servico/ClienteService")
 
-module.exports = router;
+router.get("/", async (req, res)=>{
+  await sequelize.sync({force: true})
+  res.json({msg: "Hello World"})
+})
+
+module.exports = router
