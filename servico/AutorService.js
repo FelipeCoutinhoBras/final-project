@@ -7,10 +7,10 @@ module.exports = {
     return autores
   },
   
-  save: async function (nome, pseudonimo) {
+  save: async function (obj) {
     const autor = await AutorModel.create({
-      nome: nome,
-      pseudonimo: pseudonimo
+      nome: obj.nome,
+      pseudonimo: obj.pseudonimo
     })
     return autor
   },
