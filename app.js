@@ -9,8 +9,10 @@ const bodyParser = require('body-parser')
 const sequelizeDB = require('./helpers/bd')
 const indexRouter = require('./routes/index');
 const autorRoutes = require('./routes/AutorRoutes');
-const categoriaRoutes = require('./routes/AutorRoutes');
+const categoriaRoutes = require('./routes/CategoriaRoutes');
 const clienteRoutes = require('./routes/ClienteRoutes');
+const editoraRoutes = require('./routes/EditoraRoutes');
+const funcionarioRoutes = require('./routes/FuncionarioRoutes');
 
 dotenv.config()
 
@@ -26,6 +28,8 @@ app.use('/', indexRouter);
 app.use('/autor', autorRoutes);
 app.use('/categoria', categoriaRoutes);
 app.use('/cliente', clienteRoutes);
+app.use('/editora', editoraRoutes);
+app.use('/funcionario', funcionarioRoutes)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,7 +44,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({mensaegem: "Um erro desconhecido ocorreu"});
+  res.json({err, mensaegem: "Um erro desconhecido ocorreu"});
 });
 
 module.exports = app;
