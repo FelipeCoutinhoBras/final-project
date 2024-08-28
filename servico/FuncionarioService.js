@@ -19,13 +19,12 @@ module.exports = {
   },
 
   update: async function (id, cpf, nome, telefone, login, senha) {
-    const funcionario = await FuncionarioModel.update({
+    return await FuncionarioModel.update({
       cpf: cpf,
       nome: nome,
       telefone: telefone,
       login: login,
       senha: senha}, {where: {id: id}})
-  return funcionario
   },
 
   delete: async function (id) {

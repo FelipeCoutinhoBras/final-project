@@ -16,12 +16,11 @@ module.exports = {
   },
 
   update: async function(nome, telefone, email) {
-    const editora = await EditoraModel.update({
+    return await EditoraModel.update({
       nome: nome,
       telefone: telefone, 
       email: email}, {where: { id: id}}
     )
-    return editora
   },
 
   delete: async function(id) {

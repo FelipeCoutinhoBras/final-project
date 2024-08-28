@@ -21,7 +21,7 @@ module.exports = {
   },
 
   update: async function(id, cpf, nascimento, nome, telefone, email, login, senha) {
-    const cliente = await ClienteModel.update({
+    return await ClienteModel.update({
       cpf: cpf,
       nascimento: nascimento, 
       nome: nome,
@@ -30,7 +30,6 @@ module.exports = {
       login: login, 
       senha: senha}, {where: { id: id}}
     )
-    return cliente
   },
   
   delete: async function(id) {
