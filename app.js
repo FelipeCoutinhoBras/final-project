@@ -13,6 +13,7 @@ const categoriaRoutes = require('./routes/CategoriaRoutes');
 const clienteRoutes = require('./routes/ClienteRoutes');
 const editoraRoutes = require('./routes/EditoraRoutes');
 const funcionarioRoutes = require('./routes/FuncionarioRoutes');
+const livroRoutes = require('./routes/LivroRoutes');
 
 dotenv.config()
 
@@ -30,6 +31,8 @@ app.use('/categoria', categoriaRoutes);
 app.use('/cliente', clienteRoutes);
 app.use('/editora', editoraRoutes);
 app.use('/funcionario', funcionarioRoutes)
+app.use('/livro', livroRoutes)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,7 +47,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({err, mensaegem: "Um erro desconhecido ocorreu"});
+  res.json(err);
 });
 
 module.exports = app;

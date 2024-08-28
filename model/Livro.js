@@ -29,7 +29,7 @@ const LivroModel = sequelize.define("Livro", {
     allowNull: false,
   },
   estado: {
-    type: DataTypes.ENUM('emprestado', 'devolvido'),
+    type: DataTypes.ENUM("disponivel", "emprestado"),
     allowNull: false,
   },
 });
