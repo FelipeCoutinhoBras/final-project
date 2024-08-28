@@ -3,7 +3,7 @@ const ClienteModel = require("../model/Cliente");
 
 module.exports = {
   list: async function() {
-    const clientes = await ClienteModel.listAll()
+    const clientes = await ClienteModel.findAll()
     return clientes
   },
 
@@ -20,7 +20,7 @@ module.exports = {
     return cliente
   },
 
-  update: async function(cpf, nascimento, nome, telefone, email, login, senha) {
+  update: async function(id, cpf, nascimento, nome, telefone, email, login, senha) {
     const cliente = await ClienteModel.update({
       cpf: cpf,
       nascimento: nascimento, 

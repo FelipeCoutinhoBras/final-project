@@ -17,6 +17,18 @@ router.get("/:id", async (req, res, next)=> {
   }
 })
 
+router.post("/", async (req, res, next)=>{
+  let {nome, telefone, email} = req.body
+
+  let novaeditora = await ClienteService.save(nome, telefone, email)
+
+  if(novaeditora) {
+    res.status(200).json(novaeditora)
+  } else{
+    res.status(500).json({msg: "Erro ao cadastrar nova editora"})
+  }
+})
+
 router.put("/:id", async(req, res, next) => {
   let editoraId = req.params.id
   let {nome, telefone, email} = req.body
@@ -24,9 +36,9 @@ router.put("/:id", async(req, res, next) => {
   let editoraAtualizada = await EditoraService.update(editoraId, nome, telefone, email)
 
   if (editoraAtualizada) {
-    res.status(200).json(editoraAtualizada)
+    res.status(200).json({msg: "Editora atualizada com sucesso"})
   } else {
-    res.status(500).json()
+    res.status(500).json({msg: "Erro ao atualizar editora"})
   }
 })
 
@@ -36,9 +48,9 @@ router.delete("/:id", async(req, res, next) => {
   let editoraDeletado = await EditoraService.delete(editoraId)
 
   if(editoraDeletado) {
-    res.status(200).json(editoraDeletado)
+    res.status(200).json({msg: "Editora cancelada com sucesso"})
   } else {
-    res.status(500).json()
+    res.status(500).json({msg: "Erro ao deletar editora"})
   }
 })
 

@@ -13,7 +13,7 @@ router.get("/:id", async (req, res, next)=> {
   if (categoria) {
     res.status(200).json(categoria)
   } else{
-    res.status(500).json({msg: "Categoria não localizado"})
+    res.status(500).json({msg: "Categoria não localizada"})
   }
 })
 

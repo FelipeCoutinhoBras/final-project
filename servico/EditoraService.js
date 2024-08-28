@@ -3,7 +3,7 @@ const EditoraModel = require("../model/Editora");
 
 module.exports = {
   list: async function() {
-    const editoras = await EditoraModel.listAll()
+    const editoras = await EditoraModel.findAll()
     return editoras
   },
 
