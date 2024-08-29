@@ -1,5 +1,6 @@
 const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../helpers/bd");
+const { toDefaultValue, defaultValueSchemable } = require("sequelize/lib/utils");
 
 const FuncionarioModel = sequelize.define("Funcionario", {
   id: {
@@ -8,7 +9,7 @@ const FuncionarioModel = sequelize.define("Funcionario", {
     autoIncrement: true,
   },
   cpf: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   nome: {
@@ -16,15 +17,21 @@ const FuncionarioModel = sequelize.define("Funcionario", {
     allowNull: false,
   },
   telefone: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   login: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   senha: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  }
 });
 
 module.exports = FuncionarioModel;

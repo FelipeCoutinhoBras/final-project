@@ -9,7 +9,7 @@ const ClienteModel = sequelize.define("Cliente", {
     primaryKey: true,
   },
   cpf: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   nascimento: {
@@ -21,7 +21,7 @@ const ClienteModel = sequelize.define("Cliente", {
     allowNull: false,
   },
   telefone: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   email: {

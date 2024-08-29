@@ -12,7 +12,7 @@ const EditoraModel = sequelize.define("Editora", {
     allowNull: false,
   },
   telefone: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   email: {
