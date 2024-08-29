@@ -14,6 +14,8 @@ const clienteRoutes = require('./routes/ClienteRoutes');
 const editoraRoutes = require('./routes/EditoraRoutes');
 const funcionarioRoutes = require('./routes/FuncionarioRoutes');
 const livroRoutes = require('./routes/LivroRoutes');
+const emprestimoRoutes = require('./routes/EmprestimoRoutes');
+
 
 dotenv.config()
 
@@ -32,6 +34,8 @@ app.use('/cliente', clienteRoutes);
 app.use('/editora', editoraRoutes);
 app.use('/funcionario', funcionarioRoutes)
 app.use('/livro', livroRoutes)
+app.use('/emprestimo', emprestimoRoutes)
+
 
 
 // catch 404 and forward to error handler
