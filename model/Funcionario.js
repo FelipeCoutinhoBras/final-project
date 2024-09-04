@@ -31,7 +31,8 @@ const FuncionarioModel = sequelize.define("Funcionario", {
   isAdmin: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-  }
+  },
+  
 });
 
 module.exports = FuncionarioModel;

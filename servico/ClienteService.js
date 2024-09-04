@@ -44,5 +44,9 @@ module.exports = {
 
   getByName: async function (nome) {
     return await ClienteModel.findOne({where: {nome: { [Op.like]: '%' + nome + "%"}}})
+  },
+
+  getLogin: async function(login, senha) {
+    return await ClienteModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
   }
 };

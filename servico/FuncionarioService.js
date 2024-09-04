@@ -7,7 +7,7 @@ module.exports = {
     return funcionarios
   },
   
-  save: async function (cpf, nome, telefone, login, senha) {
+  save: async function (cpf, nome, telefone, login,  senha) {
     const funcionario = await FuncionarioModel.create({
       cpf: cpf,
       nome: nome,
@@ -37,5 +37,21 @@ module.exports = {
 
   getByName: async function(nome) {
     return await FuncionarioModel.findOne({where: {nome: { [Op.like]: '%' + nome + "%"}}})
+  },
+  getAdmin: async function(login, senha ) {
+    const funcionarioAdmin = await FuncionarioModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
+
+    if (funcionarioAdmin) {
+      const ehAdmin = await FuncionarioModel.findOne({where: {[Op.and]: [{login: login}, {isAdmin: 1}]}})
+
+      if (ehAdmin) {
+        return ehAdmin
+      } else {
+        return null
+      }
+    }
+  },
+  getLogin: async function(login, senha) {
+    return await FuncionarioModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
   }
 }

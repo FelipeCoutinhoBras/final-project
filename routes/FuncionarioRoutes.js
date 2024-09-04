@@ -1,9 +1,10 @@
 const express = require("express")
 const router = express.Router()
 
+const validaToken = require('../helpers/validaToken')
 const FuncionarioService = require("../servico/FuncionarioService")
 
-router.get("/", async (req, res, next)=> {
+router.get("/", validaToken.validaTokenFuncionario,  async (req, res, next)=> {
   let funcionarios = await FuncionarioService.list()
   res.status(200).json(funcionarios)
 });

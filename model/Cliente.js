@@ -35,7 +35,7 @@ const ClienteModel = sequelize.define("Cliente", {
   senha: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
+  }
 });
 
 ClienteModel.hasMany(EmprestimoModel, {
