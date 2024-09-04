@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require("morgan");
 const dotenv = require("dotenv")
 const bodyParser = require('body-parser')
+const jwt = require("jsonwebtoken")
 
 const sequelizeDB = require('./helpers/bd')
 const indexRouter = require('./routes/index');
@@ -15,7 +16,6 @@ const editoraRoutes = require('./routes/EditoraRoutes');
 const funcionarioRoutes = require('./routes/FuncionarioRoutes');
 const livroRoutes = require('./routes/LivroRoutes');
 const emprestimoRoutes = require('./routes/EmprestimoRoutes');
-
 
 dotenv.config()
 
@@ -35,8 +35,6 @@ app.use('/editora', editoraRoutes);
 app.use('/funcionario', funcionarioRoutes)
 app.use('/livro', livroRoutes)
 app.use('/emprestimo', emprestimoRoutes)
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
