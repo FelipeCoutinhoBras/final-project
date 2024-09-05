@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const sequelize = require("../helpers/bd")
 const jwt = require("jsonwebtoken")
-const SECRET = "aslmcodncwonds"
+require('dotenv').config()
 
 const FuncionarioService = require("../servico/FuncionarioService")
 const ClienteService = require('../servico/ClienteService')
@@ -37,7 +37,7 @@ router.post("/login", async (req, res, next) => {
       return res.status(401).json({ msg: "Usuário ou senha incorretos!" });
     }
 
-    const token = jwt.sign(payload, SECRET, {
+    const token = jwt.sign(payload, process.env.SECRET, {
       expiresIn: '30min'
     });
 
