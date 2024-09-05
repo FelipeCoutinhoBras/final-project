@@ -5,7 +5,12 @@ const AutorService = require('../servico/AutorService')
 
 router.get("/", async (req, res, next) => {
   let autores = await AutorService.list()
-  res.status(200).json(autores)
+
+  if (autores) {
+    res.status(200).json(autores)
+  } else {
+    res.status(500).json({msg: "Não há nenhum autor cadastrado"})
+  }
 })
 
 router.get("/:id", async (req, res, next)=> {
@@ -23,7 +28,7 @@ router.post("/", async(req, res, next) => {
   if (novoautor) {
     res.status(200).json(novoautor)
   } else {
-    res.status(500).json({msg: "Errom ao cadastrar novo autor"})
+    res.status(500).json({msg: "Erro ao cadastrar novo autor"})
   }
 }) 
 
@@ -36,7 +41,7 @@ router.put("/:id", async(req, res, next) => {
   if (autorAtualizado) {
     res.status(200).json({msg: "Autor atualizado com sucesso"})
   } else {
-    res.status(500).json({msg: "Errom ao atualizar o autor"})
+    res.status(500).json({msg: "Autor não localizado"})
   }
 })
 
@@ -48,7 +53,7 @@ router.delete("/:id", async(req, res, next) => {
   if(autorDeletado) {
     res.status(200).json({msg: "Autor deletado com sucesso"})
   } else {
-    res.status(500).json({msg: "Errom ao deletar autor"})
+    res.status(500).json({msg: "Autor não localizado"})
   }
 })
 

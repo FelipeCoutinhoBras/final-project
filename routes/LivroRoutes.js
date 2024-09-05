@@ -1,19 +1,20 @@
 const express = require("express")
 const router = express.Router()
 
+const validaToken = require('../helpers/validaToken')
 const LivroService = require("../servico/LivroService")
 
-router.get("/", async (req, res, next)=>{
+router.get("/", validaToken.validaTokenCliente, async (req, res, next)=>{
   const livros = await LivroService.list()
 
   if (livros) {
     res.status(200).json(livros)
   } else {
-    res.status(500).json({msg: "Nenhum livro foi localizado"})
+    res.status(500).json({msg: "Não há nenhum livro cadastrado ainda"})
   }
 })
 
-router.get("/:id", async (req, res, next)=>{
+router.get("/:id", validaToken.validaTokenCliente, async (req, res, next)=>{
   const livro = await LivroService.getById(req.params.id)
 
   if(livro) {
@@ -23,7 +24,7 @@ router.get("/:id", async (req, res, next)=>{
   }
 })
 
-router.post("/", async (req, res, next)=>{
+router.post("/", validaToken.validaTokenFuncionario, async (req, res, next)=>{
   const {titulo, ano, descricao, estado} = req.body
 
   const livro = await LivroService.save(titulo, ano, descricao, estado)
@@ -35,7 +36,7 @@ router.post("/", async (req, res, next)=>{
   }
 })
 
-router.put("/:id", async (req, res, next)=>{
+router.put("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=>{
   const livroId = req.params.id
   const {titulo, ano, descricao, estado} = req.body
 
@@ -48,7 +49,7 @@ router.put("/:id", async (req, res, next)=>{
   }
 })
 
-router.delete("/:id", async(req, res, next)=>{
+router.delete("/:id", validaToken.validaTokenFuncionario, async(req, res, next)=>{
   const livroId = req.params.id
 
   const livroDeletado = await LivroService.delete(livroId)

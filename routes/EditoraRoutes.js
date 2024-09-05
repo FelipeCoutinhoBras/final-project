@@ -5,7 +5,11 @@ const EditoraService = require('../servico/EditoraService')
 
 router.get("/", async (req, res, next) => {
   let editoras = await EditoraService.list()
-  res.status(200).json(editoras)
+  if (editoras) {
+    res.status(200).json(editoras)
+  } else {
+    res.status(500).json({msg: "Não há nenhuma editora cadastrada"})
+  }
 })
 
 router.get("/:id", async (req, res, next)=> {

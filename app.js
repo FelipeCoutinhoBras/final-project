@@ -16,6 +16,7 @@ const editoraRoutes = require('./routes/EditoraRoutes');
 const funcionarioRoutes = require('./routes/FuncionarioRoutes');
 const livroRoutes = require('./routes/LivroRoutes');
 const emprestimoRoutes = require('./routes/EmprestimoRoutes');
+const validaToken = require("./helpers/validaToken")
 
 dotenv.config()
 
@@ -28,13 +29,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/autor', autorRoutes);
-app.use('/categoria', categoriaRoutes);
+app.use('/autor', validaToken.validaTokenFuncionario, autorRoutes);
+app.use('/categoria', validaToken.validaTokenFuncionario, categoriaRoutes);
 app.use('/cliente', clienteRoutes);
-app.use('/editora', editoraRoutes);
+app.use('/editora', validaToken.validaTokenFuncionario, editoraRoutes);
 app.use('/funcionario', funcionarioRoutes)
 app.use('/livro', livroRoutes)
-app.use('/emprestimo', emprestimoRoutes)
+app.use('/emprestimo', validaToken.validaTokenFuncionario, emprestimoRoutes)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

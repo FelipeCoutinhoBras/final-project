@@ -7,24 +7,26 @@ module.exports = {
     return funcionarios
   },
   
-  save: async function (cpf, nome, telefone, login,  senha) {
+  save: async function (cpf, nome, telefone, login, senha, isAdmin) {
     const funcionario = await FuncionarioModel.create({
       cpf: cpf,
       nome: nome,
       telefone: telefone,
       login: login,
       senha: senha,
+      isAdmin: isAdmin,
     })
     return funcionario
   },
 
-  update: async function (id, cpf, nome, telefone, login, senha) {
+  update: async function (id, cpf, nome, telefone, login, senha, isAdmin) {
     return await FuncionarioModel.update({
       cpf: cpf,
       nome: nome,
       telefone: telefone,
       login: login,
-      senha: senha}, {where: {id: id}})
+      senha: senha,
+      isAdmin: isAdmin}, {where: {id: id}})
   },
 
   delete: async function (id) {

@@ -1,17 +1,19 @@
 const express = require("express")
 const router = express.Router()
-const jwt = require("jsonwebtoken")
-const SECRET = "aslmcodncwonds"
 
 const validaToken = require('../helpers/validaToken')
 const ClienteService = require('../servico/ClienteService')
 
-router.get("/", async (req, res, next) => {
+router.get("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
   let clientes = await ClienteService.list()
-  res.status(200).json(clientes)
+  if (clientes) {
+    res.status(200).json(clientes)
+  } else {
+    res.status(500).json({msg: "Não há nenhum cliente cadastrado"})
+  }
 })
 
-router.get("/:id", async (req, res, next)=> {
+router.get("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=> {
   let cliente = await ClienteService.getById(req.params.id)
   if (cliente) {
     res.status(200).json(cliente)
@@ -20,7 +22,7 @@ router.get("/:id", async (req, res, next)=> {
   }
 })
 
-router.post("/", async (req, res, next)=>{
+router.post("/", validaToken.validaTokenFuncionario, async (req, res, next)=>{
   let {cpf, nascimento, nome, telefone, email, login, senha} = req.body
 
   let novocliente = await ClienteService.save(cpf, nascimento, nome, telefone, email, login, senha)
@@ -32,7 +34,7 @@ router.post("/", async (req, res, next)=>{
   }
 })
 
-router.put("/:id", async(req, res, next) => {
+router.put("/:id", validaToken.validaTokenCliente, async(req, res, next) => {
   let clienteId = req.params.id
   let {cpf, nascimento, nome, telefone, email, login, senha} = req.body
 
@@ -45,7 +47,7 @@ router.put("/:id", async(req, res, next) => {
   }
 })
 
-router.delete("/:id", async(req, res, next) => {
+router.delete("/:id", validaToken.validaTokenFuncionario, async(req, res, next) => {
   let clienteId = req.params.id
 
   let clienteDeletado = await ClienteService.delete(clienteId)

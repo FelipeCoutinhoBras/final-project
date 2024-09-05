@@ -5,7 +5,12 @@ const CategoriaService = require('../servico/CategoriaService')
 
 router.get("/", async (req, res, next) => {
   let categorias = await CategoriaService.list()
-  res.status(200).json(categorias)
+  if (categorias) {
+    res.status(200).json(categorias)
+  } else {
+    res.status(500).json({msg: "Não há nenhuma categoria cadastrada"})
+  }
+
 })
 
 router.get("/:id", async (req, res, next)=> {
@@ -23,7 +28,7 @@ router.post("/", async(req, res, next) => {
   if (novaCategoria) {
     res.status(200).json(novaCategoria)
   } else {
-    res.status(500).json()
+    res.status(500).json({msg: "Erro ao cadastrar categoria"})
   }
 })
 
@@ -36,7 +41,7 @@ router.put("/:id", async(req, res, next) => {
   if (categoriaAtualizada) {
     res.status(200).json(categoriaAtualizada)
   } else {
-    res.status(500).json()
+    res.status(500).json({msg: "Categoria não localizada"})
   }
 })
 
@@ -48,7 +53,7 @@ router.delete("/:id", async(req, res, next) => {
   if(categoriaDeletada) {
     res.status(200).json(categoriaDeletada)
   } else {
-    res.status(500).json()
+    res.status(500).json({msg: "Categoria não localizada"})
   }
 })
 
