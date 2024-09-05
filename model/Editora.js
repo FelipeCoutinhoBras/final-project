@@ -17,6 +17,7 @@ const EditoraModel = sequelize.define("Editora", {
   },
   email: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
 });
 

@@ -15,12 +15,25 @@ module.exports = {
     return editora
   },
 
-  update: async function(nome, telefone, email) {
-    return await EditoraModel.update({
+  update: async function(id, nome, telefone, email) {
+      // Verificar se a editora existe antes de atualizar
+  const editoraExistente = await EditoraModel.findByPk(id);
+  if (!editoraExistente) {
+    return null; // Retorna null se a editora não for encontrada
+  }
+
+  // Atualiza a editora se ela for encontrada
+  await EditoraModel.update(
+    {
       nome: nome,
       telefone: telefone, 
-      email: email}, {where: { id: id}}
-    )
+      email: email
+    }, 
+    { where: { id: id }}
+  );
+
+  // Retorna a editora atualizada
+  return await EditoraModel.findByPk(id);
   },
 
   delete: async function(id) {
