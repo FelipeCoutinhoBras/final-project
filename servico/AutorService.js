@@ -7,18 +7,32 @@ module.exports = {
     return autores
   },
   
-  save: async function (obj) {
+  save: async function (nome, pseudonimo) {
     const autor = await AutorModel.create({
-      nome: obj.nome,
-      pseudonimo: obj.pseudonimo
+      nome: nome,
+      pseudonimo: pseudonimo
     })
     return autor
   },
 
   update: async function (id, nome, pseudonimo) {
-    return await AutorModel.update({nome: nome, pseudonimo: pseudonimo}, {
-      where: {id: id}
-    })
+  // Verificar se o autor existe antes de atualizar
+  const autorExistente = await AutorModel.findByPk(id);
+  if (!autorExistente) {
+    return null; // Retorna null se o autor não for encontrado
+  }
+
+  // Atualiza o autor se ela for encontrado
+  await AutorModel.update(
+    {
+      nome: nome,
+      pseudonimo: pseudonimo, 
+    }, 
+    { where: { id: id }}
+  );
+
+  // Retorna o autor atualizada
+  return await AutorModel.findByPk(id);
   },
 
   delete: async function (id) {

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const validaDados = require("../helpers/validaDados")
 const AutorService = require('../servico/AutorService')
 
 router.get("/", async (req, res, next) => {
@@ -23,27 +24,62 @@ router.get("/:id", async (req, res, next)=> {
 })
 
 router.post("/", async(req, res, next) => {
-  let novoautor = await AutorService.save(req.body)
-
-  if (novoautor) {
-    res.status(200).json(novoautor)
-  } else {
-    res.status(500).json({msg: "Erro ao cadastrar novo autor"})
+  try {
+    const {nome, pseudonimo} = req.body
+  
+    // Validação dos dados usando Joi
+    const { error, value } = validaDados.schemaAutor.validate({ nome, pseudonimo });
+  
+    // Se a validação falhar, retorna um erro
+    if (error) {
+      return res.status(400).json({ msg: error.details[0].message });
+    }
+  
+    // Se a validação for bem-sucedida, salva o nova autor
+    let novoautor = await AutorService.save(value.nome, value.pseudonimo);
+  
+    if (novoautor) {
+      res.status(200).json(novoautor);
+    } else {
+      res.status(500).json({msg: "Erro ao cadastrar novo autor" });
+    }
+  } catch (err) {
+    next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
-}) 
-
+  });
+  
 router.put("/:id", async(req, res, next) => {
-  let autorId = req.params.id
-  let {nome, pseudonimo} = req.body
-
-  let autorAtualizado = await AutorService.update(autorId, nome, pseudonimo)
-
-  if (autorAtualizado) {
-    res.status(200).json({msg: "Autor atualizado com sucesso"})
-  } else {
-    res.status(500).json({msg: "Autor não localizado"})
+  try {
+    let autorId = req.params.id
+    let {nome, pseudonimo} = req.body
+  
+    // Validação dos dados usando Joi
+    const {error, value} = validaDados.schemaAutor.validate({ nome, pseudonimo });
+  
+    // Se a validação falhar, retorna um erro
+    if (error) {
+      return res.status(400).json({msg: error.details[0].message})
+    }
+  
+    let editoraAtualizada = await AutorService.update(autorId, value.nome, value.pseudonimo)
+  
+    if (editoraAtualizada) {
+      res.status(200).json({msg: "Autor atualizado com sucesso"})
+    } else {
+      res.status(500).json({msg: "Erro ao atualizar o autor"})
+    }
+  } catch (err) {
+    next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
 })
+  
+
+
+
+
+
+
+
 
 router.delete("/:id", async(req, res, next) => {
   let autorId = req.params.id
