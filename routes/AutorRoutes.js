@@ -26,7 +26,7 @@ router.get("/:id", async (req, res, next)=> {
 router.post("/", async(req, res, next) => {
   try {
     const {nome, pseudonimo} = req.body
-  
+
     // Validação dos dados usando Joi
     const { error, value } = validaDados.schemaAutor.validate({ nome, pseudonimo });
   
@@ -34,8 +34,15 @@ router.post("/", async(req, res, next) => {
     if (error) {
       return res.status(400).json({ msg: error.details[0].message });
     }
-  
-    // Se a validação for bem-sucedida, salva o novo autor
+    // Se a validação for bem-sucedida, verifica se já existe um autor com o nome fornecido
+
+    const autorCadastrado = await AutorService.getByName(value.nome, value.pseudonimo)
+
+    if (autorCadastrado) {
+      res.status(400).json({msg: "Esse autor já existe!" });
+    }
+
+    // Se a validação for bem-sucedida, e o autor não existir, cadastra o novo autor
     let novoautor = await AutorService.save(value.nome, value.pseudonimo);
   
     if (novoautor) {
@@ -60,6 +67,15 @@ router.put("/:id", async(req, res, next) => {
     if (error) {
       return res.status(400).json({msg: error.details[0].message})
     }
+
+    // Se a validação for bem-sucedida, verifica se já existe um autor com o nome fornecido
+
+    const autorCadastrado = await AutorService.getByName(value.nome, value.pseudonimo)
+
+    if (autorCadastrado) {
+      return res.status(400).json({msg: "Esse autor já existe! Atualização não autorizada." });
+    }
+    
   
     // Se a validação for bem-sucedida, salva o novo autor
     let editoraAtualizada = await AutorService.update(autorId, value.nome, value.pseudonimo)

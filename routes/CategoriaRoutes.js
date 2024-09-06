@@ -34,6 +34,14 @@ router.post("/", async(req, res, next) => {
       return res.status(400).json({msg: error.details[0].message})
     }
 
+    // Se a validação for bem-sucedida, verifica se já existe uma categoria com o tipo fornecido
+
+    const categoriaCadastrada = await CategoriaService.getByName(value.tipo)
+
+    if (categoriaCadastrada) {
+      return res.status(400).json({msg: "Essa categoria já existe!" });
+    }  
+
     // Se a validação for bem-sucedida, salva o nova autor
     let novaCategoria = await CategoriaService.save(value.tipo)
 
@@ -60,6 +68,14 @@ router.put("/:id", async(req, res, next) => {
     if (error) {
       return res.status(400).json({msg: error.details[0].message})
     }
+
+    // Se a validação for bem-sucedida, verifica se já existe uma categoria com o tipo fornecido
+
+    const categoriaCadastrada = await CategoriaService.getByName(value.tipo)
+
+    if (categoriaCadastrada) {
+      res.status(400).json({msg: "Essa categoria já existe! Falha ao atualizar o cadastro." });
+    }      
 
     // Se a validação for bem-sucedida, salva a nova categoria
     let categoriaAtualizada = await CategoriaService.update(categoriaId, value.tipo)

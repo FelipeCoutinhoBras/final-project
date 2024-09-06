@@ -34,6 +34,17 @@ router.post("/", validaToken.validaTokenFuncionario, async (req, res, next)=>{
     if (error) {
       return res.status(400).json({ msg: error.details[0].message });
     }
+
+    // Se a validação for bem-sucedida, verifica se já existe um cliente com o cpf ou login fornecido
+
+    const cpfCadastrado = await ClienteService.getByCPF(value.cpf)
+    const loginCadastrado = await ClienteService.getLoginCadastrado(value.login)
+
+    if (cpfCadastrado) {
+      return res.status(400).json({msg: "Esse cliente já existe!" });
+    } else if (loginCadastrado) {
+      return res.status(400).json({msg: "Esse login já existe! Tente outro." });
+    }
   
     // Se a validação for bem-sucedida, salva o novo cliente
     let novocliente = await ClienteService.save(value.cpf, value.nascimento, value.nome, value.telefone, value.email, value.login, value.senha);
@@ -59,6 +70,14 @@ router.put("/:id", validaToken.validaTokenCliente, async(req, res, next) => {
     // Se a validação falhar, retorna um erro
     if (error) {
       return res.status(400).json({msg: error.details[0].message})
+    }
+
+    // Se a validação for bem-sucedida, verifica se já existe um cliente com o login fornecido
+
+    const loginCadastrado = await ClienteService.getLoginCadastrado(value.login)
+
+    if (loginCadastrado) {
+      return res.status(400).json({msg: "Esse login já existe! Tente outro." });
     }
   
     // Se a validação for bem-sucedida, salva o cliente atualizado

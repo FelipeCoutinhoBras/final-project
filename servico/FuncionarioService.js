@@ -65,7 +65,16 @@ module.exports = {
       }
     }
   },
+
   getLogin: async function(login, senha) {
     return await FuncionarioModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
-  }
+  },
+
+  getLoginCadastrado: async function(login) {
+    return await FuncionarioModel.findOne({where: {login: login}})
+  },
+
+  getByCPF: async function (cpf) {
+    return await FuncionarioModel.findOne({where: {cpf: cpf}})
+  },
 }

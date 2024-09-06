@@ -34,6 +34,14 @@ router.post("/", async (req, res, next)=>{
       return res.status(400).json({ msg: error.details[0].message });
     }
 
+    // Se a validação for bem-sucedida, verifica se já existe uma editora com o nome fornecido
+
+    const editoraCadastrada = await EditoraService.getByName(value.nome)
+
+    if (editoraCadastrada) {
+      return res.status(400).json({msg: "Já existe uma editora cadastrada com este mesmo nome!" });
+    }  
+
     // Se a validação for bem-sucedida, salva a nova editora
     let novaeditora = await EditoraService.save(value.nome, value.telefone, value.email);
 

@@ -3,6 +3,7 @@ const router = express.Router()
 
 const validaDados = require("../helpers/validaDados")
 const EmprestimoService = require("../servico/EmprestimoService")
+const LivroService = require('../servico/LivroService')
 
 router.get("/", async (req, res, next)=> {
   const livrosEmprestados = await EmprestimoService.list()
@@ -35,6 +36,13 @@ router.post("/", async (req, res, next)=>{
     if (error) {
       return res.status(400).json({ msg: error.details[0].message });
     }
+
+    // Se a validação for bem-sucedida, verifica se o livro já foi emprestado
+    const livroEmprestado = await LivroService.getLivroEmprestado(value.LivroId)
+
+    if (livroEmprestado) {
+      return res.status(400).json({msg: "Este livro já foi emprestado!" });
+    }  
 
     // Se a validação for bem-sucedida, salva o novo emprestimo
     const novoEmprestimo = await EmprestimoService.save(value.data_emprestimo, value.data_devolucao, value.cliente, value.LivroId, value.FuncionarioId) 

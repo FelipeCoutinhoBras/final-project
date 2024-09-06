@@ -46,12 +46,18 @@ module.exports = {
     return await LivroModel.findByPk(id)
   },
 
+  getLivroEmprestado: async function (id) {
+    const livroEmprestado = await LivroModel.findOne({where: {[Op.and]: [{id: id}, {estado: "emprestado"}]}})
+    return livroEmprestado
+  },
+
   getByName: async function (titulo) {
     return await LivroModel.findOne({where: {
       titulo: {
         [Op.like]: "%" + titulo + "%"
       }
     }})
-  }
+  },
+
 }
 

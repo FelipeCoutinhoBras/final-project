@@ -34,7 +34,17 @@ router.post("/", validaToken.validaTokenAdmin, async (req, res, next)=>{
     if (error) {
       return res.status(400).json({ msg: error.details[0].message });
     }
-  
+    // Se a validação for bem-sucedida, verifica se já existe um funcionario com o cpf ou login fornecido
+
+    const cpfCadastrado = await FuncionarioService.getByCPF(value.cpf)
+    const loginCadastrado = await FuncionarioService.getLoginCadastrado(value.login)
+
+    if (cpfCadastrado) {
+      return res.status(400).json({msg: "Esse funcionario já existe!" });
+    } else if (loginCadastrado) {
+      return res.status(400).json({msg: "Esse login já existe! Tente outro."});
+    }
+
     // Se a validação for bem-sucedida, salva o novo funcionario
     let novofuncionario = await FuncionarioService.save(value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
 
@@ -59,6 +69,13 @@ router.put("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=>{
     // Se a validação falhar, retorna um erro
     if (error) {
       return res.status(400).json({msg: error.details[0].message})
+    }
+
+    // Se a validação for bem-sucedida, verifica se já existe um cliente com o login fornecido
+    const loginCadastrado = await FuncionarioService.getLoginCadastrado(value.login)
+
+    if (loginCadastrado) {
+      return res.status(400).json({msg: "Esse login já existe! Tente outro."});
     }
   
     // Se a validação for bem-sucedida, salva o funcionario atualizado

@@ -57,6 +57,13 @@ module.exports = {
     return await ClienteModel.findOne({where: {nome: { [Op.like]: '%' + nome + "%"}}})
   },
 
+  getByCPF: async function (cpf) {
+    return await ClienteModel.findOne({where: {cpf: cpf}})
+  },
+  getLoginCadastrado: async function(login) {
+    return await ClienteModel.findOne({where: {login: login}})
+  },
+
   getLogin: async function(login, senha) {
     return await ClienteModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
   }
