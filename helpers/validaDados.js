@@ -1,17 +1,17 @@
 const Joi = require("joi");
 
 const schemaAutor  = Joi.object({
-  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).required().messages({
     "string.pattern.base": "O nome precisa ter no mínimo 3 letras.",
     "any.required": "O nome é obrigatório."
-  }),
-  pseudonimo: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).messages({
+}),
+  pseudonimo: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).messages({
     "string.pattern.base": "O pseudônimo precisa ter no mínimo 3 letras."
   }),
 });
 
 const schemaCategoria = Joi.object({
-  tipo: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  tipo:  Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).required().messages({
     "string.pattern.base": "O tipo de categoria precisa ter no mínimo 3 letras.",
     "any.required": "O tipo de categoria é obrigatório."
   })
@@ -26,10 +26,10 @@ const schemaCliente = Joi.object({
     "date.base": "A data de nascimento deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data de nascimento é obrigatória."
   }),
-  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).required().messages({
     "string.pattern.base": "O nome precisa ter no mínimo 3 letras.",
     "any.required": "O nome é obrigatório."
-  }),
+}),
   telefone: Joi.string().pattern(/^\d{10,11}$/).required().messages({
     "string.pattern.base": "O telefone deve conter 10 a 11 números.",
     "any.required": "O telefone é obrigatório."
@@ -49,10 +49,10 @@ const schemaCliente = Joi.object({
 });
 
 const schemaEditora = Joi.object({
-  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).required().messages({
     "string.pattern.base": "O nome precisa ter no mínimo 3 letras.",
     "any.required": "O nome é obrigatório."
-  }),
+}),
   telefone: Joi.string().pattern(/^\d{10,11}$/).required().messages({
     "string.pattern.base": "O telefone deve conter 10 a 11 números.",
     "any.required": "O telefone é obrigatório."
@@ -91,10 +91,10 @@ const schemaFuncionario = Joi.object({
     "string.pattern.base": "O CPF deve conter 11 números.",
     "any.required": "O CPF é obrigatório."
   }),
-  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  nome: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,30}$/).required().messages({
     "string.pattern.base": "O nome precisa ter no mínimo 3 letras.",
     "any.required": "O nome é obrigatório."
-  }),
+}),
   telefone: Joi.string().pattern(/^\d{10,11}$/).required().messages({
     "string.pattern.base": "O telefone deve conter 10 a 11 números.",
     "any.required": "O telefone é obrigatório."
@@ -113,7 +113,7 @@ const schemaFuncionario = Joi.object({
 });
 
 const schemaLivro = Joi.object({
-  titulo: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z]{3,30}$/).required().messages({
+  titulo: Joi.string().pattern(/^(?=.*[a-zA-Z])[a-zA-Z ]{3,100}$/).required().messages({
     "string.pattern.base": "O título precisa ter no mínimo 3 letras.",
     "any.required": "O título é obrigatório."
   }),
