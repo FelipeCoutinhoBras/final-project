@@ -1,52 +1,43 @@
-const {DataTypes, Op} = require("sequelize");
-const CategoriaModel = require('../model/Categoria')
+const { DataTypes, Op } = require("sequelize");
+const CategoriaModel = require("../model/Categoria");
 
 module.exports = {
+  // Lista todas as categorias
   list: async function () {
-    const categorias = await CategoriaModel.findAll()
-    return categorias
-  },
-  
-  save: async function (tipo) {
-    const categoriaObj = await CategoriaModel.create({
-      tipo: tipo
-    })
-    return categoriaObj
+    const categorias = await CategoriaModel.findAll();
+    return categorias;
   },
 
+  // Cria uma nova categoria
+  save: async function (tipo) {
+    const categoriaObj = await CategoriaModel.create({ tipo: tipo });
+    return categoriaObj;
+  },
+
+  // Atualiza uma categoria existente
   update: async function (id, tipo) {
-    // Verificar se a categoria existe antes de atualizar
     const categoriaExistente = await CategoriaModel.findByPk(id);
     if (!categoriaExistente) {
       return null; // Retorna null se a categoria não for encontrada
     }
-  
-    // Atualiza a categoria se ela for encontrada
-    await CategoriaModel.update(
-      {
-        tipo: tipo,
-      }, 
-      { where: { id: id }}
-    );
-  
-    // Retorna a categoria atualizada
+
+    await CategoriaModel.update({ tipo: tipo }, { where: { id: id } });
+
+    return await CategoriaModel.findByPk(id); // Retorna a categoria atualizada
+  },
+
+  // Remove uma categoria pelo ID
+  delete: async function (id) {
+    return await CategoriaModel.destroy({ where: { id: id } });
+  },
+
+  // Obtém uma categoria pelo ID
+  getById: async function (id) {
     return await CategoriaModel.findByPk(id);
   },
 
-
-  delete: async function (id) {
-    return await CategoriaModel.destroy({where: {
-      id: id
-    }})
-  },
-
-  getById: async function (id) {
-    return await CategoriaModel.findByPk(id)
-  },
-
+  // Obtém uma categoria pelo tipo
   getByName: async function (tipo) {
-    return await AutorModel.findOne({where: {tipo: tipo}})
-  }
-
-
-}
+    return await CategoriaModel.findOne({ where: { tipo: tipo } });
+  },
+};

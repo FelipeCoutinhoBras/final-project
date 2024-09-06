@@ -2,6 +2,7 @@ const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../helpers/bd");
 const { toDefaultValue, defaultValueSchemable } = require("sequelize/lib/utils");
 
+// Modelo para validar e encaminhar os dados de funcionário para o banco de dados
 const FuncionarioModel = sequelize.define("Funcionario", {
   id: {
     type: DataTypes.INTEGER,

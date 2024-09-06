@@ -1,6 +1,7 @@
 const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../helpers/bd");
 
+// Modelo para validar e encaminhar os dados de emprestimo para o banco de dados
 const EmprestimoModel = sequelize.define("Emprestimo", {
   id: {
     type: DataTypes.INTEGER,

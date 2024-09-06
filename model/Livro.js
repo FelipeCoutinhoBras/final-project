@@ -4,8 +4,9 @@ const ClienteModel = require("./Cliente");
 const AutorModel = require("./Autor");
 const FuncionarioModel = require("./Funcionario");
 const CategoriaModel = require("./Categoria");
-const EmprestimoModel = require("./Emprestimo")
+const EmprestimoModel = require("./Emprestimo");
 
+// Modelo para validar e encaminhar os dados de livro para o banco de dados
 const LivroModel = sequelize.define("Livro", {
   id: {
     type: DataTypes.INTEGER,
@@ -35,14 +36,20 @@ const LivroModel = sequelize.define("Livro", {
 });
 
 LivroModel.belongsTo(AutorModel, {
-  foreignKey: "autor",     allowNull: false,
+  foreignKey: "autor",
+  allowNull: false,
 });
 
 LivroModel.hasMany(AutorModel, {
-  foreignKey: "livro",     allowNull: false,
+  foreignKey: "livro",
+  allowNull: false,
 });
 
-LivroModel.belongsToMany(FuncionarioModel, { through: EmprestimoModel }, {foreignKey: "funcionario",     allowNull: false,});
+LivroModel.belongsToMany(
+  FuncionarioModel,
+  { through: EmprestimoModel },
+  { foreignKey: "funcionario", allowNull: false }
+);
 
 FuncionarioModel.belongsToMany(LivroModel, { through: EmprestimoModel });
 

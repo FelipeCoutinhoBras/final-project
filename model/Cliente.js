@@ -2,6 +2,7 @@ const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../helpers/bd");
 const EmprestimoModel = require("./Emprestimo");
 
+// Modelo para validar e encaminhar os dados de cliente para o banco de dados
 const ClienteModel = sequelize.define("Cliente", {
   id: {
     type: DataTypes.INTEGER,
@@ -35,11 +36,12 @@ const ClienteModel = sequelize.define("Cliente", {
   senha: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });
 
 ClienteModel.hasMany(EmprestimoModel, {
-  foreignKey: "cliente", allowNull: false,
+  foreignKey: "cliente",
+  allowNull: false,
 });
 
 module.exports = ClienteModel;

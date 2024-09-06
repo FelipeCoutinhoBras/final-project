@@ -1,70 +1,82 @@
-const {DataTypes, Op, where} = require("sequelize");
+const { DataTypes, Op } = require("sequelize");
 const ClienteModel = require("../model/Cliente");
 
 module.exports = {
-  list: async function() {
-    const clientes = await ClienteModel.findAll()
-    return clientes
+  // Lista todos os clientes
+  list: async function () {
+    const clientes = await ClienteModel.findAll();
+    return clientes;
   },
 
-  save: async function(cpf, nascimento, nome, telefone, email, login, senha) {
+  // Cria um novo cliente
+  save: async function (cpf, nascimento, nome, telefone, email, login, senha) {
     const cliente = await ClienteModel.create({
       cpf: cpf,
-      nascimento: nascimento, 
+      nascimento: nascimento,
       nome: nome,
-      telefone: telefone, 
+      telefone: telefone,
       email: email,
-      login: login, 
-      senha: senha}
-    )
-    return cliente
+      login: login,
+      senha: senha,
+    });
+    return cliente;
   },
 
-  update: async function(id, cpf, nascimento, nome, telefone, email, login, senha) {
-  // Verificar se o cliente existe antes de atualizar
-  const clienteExistente = await ClienteModel.findByPk(id);
-  if (!clienteExistente) {
-    return null; // Retorna null se o autor não for encontrado
-  }
+  // Atualiza um cliente existente
+  update: async function (
+    id,
+    cpf,
+    nascimento,
+    nome,
+    telefone,
+    email,
+    login,
+    senha
+  ) {
+    const clienteExistente = await ClienteModel.findByPk(id);
+    if (!clienteExistente) {
+      return null; // Retorna null se o cliente não for encontrado
+    }
 
-  // Atualiza o cliente se ele for encontrado
-  await ClienteModel.update(
-    {
-      cpf: cpf,
-      nascimento: nascimento, 
-      nome: nome,
-      telefone: telefone, 
-      email: email,
-      login: login, 
-      senha: senha}, {where: { id: id}}
-  );
+    await ClienteModel.update(
+      { cpf, nascimento, nome, telefone, email, login, senha },
+      { where: { id: id } }
+    );
 
-  // Retorna o cliente atualizado
-  return await ClienteModel.findByPk(id);
+    return await ClienteModel.findByPk(id); // Retorna o cliente atualizado
   },
 
-  delete: async function(id) {
-    return await ClienteModel.destroy({
-      where: { id: id}
-    })
+  // Remove um cliente pelo ID
+  delete: async function (id) {
+    return await ClienteModel.destroy({ where: { id: id } });
   },
 
+  // Obtém um cliente pelo ID
   getById: async function (id) {
-    return await ClienteModel.findByPk(id)
+    return await ClienteModel.findByPk(id);
   },
 
+  // Obtém um cliente pelo nome
   getByName: async function (nome) {
-    return await ClienteModel.findOne({where: {nome: { [Op.like]: '%' + nome + "%"}}})
+    return await ClienteModel.findOne({
+      where: { nome: { [Op.like]: "%" + nome + "%" } },
+    });
   },
 
+  // Obtém um cliente pelo CPF
   getByCPF: async function (cpf) {
-    return await ClienteModel.findOne({where: {cpf: cpf}})
-  },
-  getLoginCadastrado: async function(login) {
-    return await ClienteModel.findOne({where: {login: login}})
+    return await ClienteModel.findOne({ where: { cpf: cpf } });
   },
 
-  getLogin: async function(login, senha) {
-    return await ClienteModel.findOne({where: {[Op.and]: [{login: login}, {senha: senha}]}})
-  }
+  // Verifica se já existe um cliente com o login fornecido
+  getLoginCadastrado: async function (login) {
+    return await ClienteModel.findOne({ where: { login: login } });
+  },
+
+  // Verifica login e senha do cliente
+  getLogin: async function (login, senha) {
+    return await ClienteModel.findOne({
+      where: { [Op.and]: [{ login: login }, { senha: senha }] },
+    });
+  },
 };

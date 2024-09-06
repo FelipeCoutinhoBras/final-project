@@ -1,6 +1,7 @@
 const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../helpers/bd");
 
+// Modelo para validar e encaminhar os dados de editora para o banco de dados
 const EditoraModel = sequelize.define("Editora", {
   id: {
     type: DataTypes.INTEGER,
