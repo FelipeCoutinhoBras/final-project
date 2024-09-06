@@ -40,15 +40,15 @@ router.post("/", async(req, res, next) => {
 
     if (autorCadastrado) {
       res.status(400).json({msg: "Esse autor já existe!" });
-    }
-
-    // Se a validação for bem-sucedida, e o autor não existir, cadastra o novo autor
-    let novoautor = await AutorService.save(value.nome, value.pseudonimo);
-  
-    if (novoautor) {
-      res.status(200).json(novoautor);
     } else {
-      res.status(500).json({msg: "Erro ao cadastrar novo autor" });
+      // Se a validação for bem-sucedida, e o autor não existir, cadastra o novo autor
+      let novoautor = await AutorService.save(value.nome, value.pseudonimo);
+    
+      if (novoautor) {
+        res.status(200).json(novoautor);
+      } else {
+        res.status(500).json({msg: "Erro ao cadastrar novo autor" });
+      }
     }
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
@@ -74,17 +74,18 @@ router.put("/:id", async(req, res, next) => {
 
     if (autorCadastrado) {
       return res.status(400).json({msg: "Esse autor já existe! Atualização não autorizada." });
-    }
-    
-  
-    // Se a validação for bem-sucedida, salva o novo autor
-    let editoraAtualizada = await AutorService.update(autorId, value.nome, value.pseudonimo)
-  
-    if (editoraAtualizada) {
-      res.status(200).json({msg: "Autor atualizado com sucesso"})
     } else {
-      res.status(500).json({msg: "Erro ao atualizar o autor"})
+  
+      // Se a validação for bem-sucedida, salva o novo autor
+      let editoraAtualizada = await AutorService.update(autorId, value.nome, value.pseudonimo)
+    
+      if (editoraAtualizada) {
+        res.status(200).json({msg: "Autor atualizado com sucesso"})
+      } else {
+        res.status(500).json({msg: "Erro ao atualizar o autor"})
+      }
     }
+
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
   }

@@ -43,15 +43,17 @@ router.post("/", validaToken.validaTokenAdmin, async (req, res, next)=>{
       return res.status(400).json({msg: "Esse funcionario já existe!" });
     } else if (loginCadastrado) {
       return res.status(400).json({msg: "Esse login já existe! Tente outro."});
-    }
-
-    // Se a validação for bem-sucedida, salva o novo funcionario
-    let novofuncionario = await FuncionarioService.save(value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
-
-    if (novofuncionario) {
-      res.status(200).json(novofuncionario)
     } else {
-      res.status(500).json({msg: "Erro ao cadastrar novo funcionário"})
+
+      
+          // Se a validação for bem-sucedida, salva o novo funcionario
+          let novofuncionario = await FuncionarioService.save(value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
+      
+          if (novofuncionario) {
+            res.status(200).json(novofuncionario)
+          } else {
+            res.status(500).json({msg: "Erro ao cadastrar novo funcionário"})
+          }
     }
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
@@ -76,15 +78,17 @@ router.put("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=>{
 
     if (loginCadastrado) {
       return res.status(400).json({msg: "Esse login já existe! Tente outro."});
-    }
-  
-    // Se a validação for bem-sucedida, salva o funcionario atualizado
-    let funcionarioAtualizado = await FuncionarioService.update(funcionarioId, value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
-
-    if (funcionarioAtualizado) {
-      res.status(200).json({msg: "Funcionário atualizado com sucesso"})
     } else {
-      res.status(500).json({msg: "Erro ao atualizar o funcionário"})
+
+      
+        // Se a validação for bem-sucedida, salva o funcionario atualizado
+        let funcionarioAtualizado = await FuncionarioService.update(funcionarioId, value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
+    
+        if (funcionarioAtualizado) {
+          res.status(200).json({msg: "Funcionário atualizado com sucesso"})
+        } else {
+          res.status(500).json({msg: "Erro ao atualizar o funcionário"})
+        }
     }
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros

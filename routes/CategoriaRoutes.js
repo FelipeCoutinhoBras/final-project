@@ -40,15 +40,15 @@ router.post("/", async(req, res, next) => {
 
     if (categoriaCadastrada) {
       return res.status(400).json({msg: "Essa categoria já existe!" });
-    }  
-
-    // Se a validação for bem-sucedida, salva o nova autor
-    let novaCategoria = await CategoriaService.save(value.tipo)
-
-    if (novaCategoria) {
-      res.status(200).json(novaCategoria)
     } else {
-      res.status(500).json({msg: "Erro ao cadastrar a categoria"})
+          // Se a validação for bem-sucedida, salva o nova autor
+          let novaCategoria = await CategoriaService.save(value.tipo)
+      
+          if (novaCategoria) {
+            res.status(200).json(novaCategoria)
+          } else {
+            res.status(500).json({msg: "Erro ao cadastrar a categoria"})
+          }
     }
     
   } catch (err) {
@@ -75,16 +75,18 @@ router.put("/:id", async(req, res, next) => {
 
     if (categoriaCadastrada) {
       res.status(400).json({msg: "Essa categoria já existe! Falha ao atualizar o cadastro." });
-    }      
-
-    // Se a validação for bem-sucedida, salva a nova categoria
-    let categoriaAtualizada = await CategoriaService.update(categoriaId, value.tipo)
-
-    if (categoriaAtualizada) {
-      res.status(200).json(categoriaAtualizada)
     } else {
-      res.status(500).json({msg: "Categoria não localizada"})
+
+      // Se a validação for bem-sucedida, salva a nova categoria
+      let categoriaAtualizada = await CategoriaService.update(categoriaId, value.tipo)
+  
+      if (categoriaAtualizada) {
+        res.status(200).json(categoriaAtualizada)
+      } else {
+        res.status(500).json({msg: "Categoria não localizada"})
+      }
     }
+
     
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros

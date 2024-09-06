@@ -40,15 +40,17 @@ router.post("/", async (req, res, next)=>{
 
     if (editoraCadastrada) {
       return res.status(400).json({msg: "Já existe uma editora cadastrada com este mesmo nome!" });
-    }  
+    }  else {
 
-    // Se a validação for bem-sucedida, salva a nova editora
-    let novaeditora = await EditoraService.save(value.nome, value.telefone, value.email);
-
-    if (novaeditora) {
-      res.status(200).json(novaeditora);
-    } else {
-      res.status(500).json({ msg: "Erro ao cadastrar nova editora" });
+      
+          // Se a validação for bem-sucedida, salva a nova editora
+          let novaeditora = await EditoraService.save(value.nome, value.telefone, value.email);
+      
+          if (novaeditora) {
+            res.status(200).json(novaeditora);
+          } else {
+            res.status(500).json({ msg: "Erro ao cadastrar nova editora" });
+          }
     }
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros

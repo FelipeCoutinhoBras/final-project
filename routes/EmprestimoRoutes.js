@@ -42,16 +42,18 @@ router.post("/", async (req, res, next)=>{
 
     if (livroEmprestado) {
       return res.status(400).json({msg: "Este livro já foi emprestado!" });
-    }  
+    }  else {
 
-    // Se a validação for bem-sucedida, salva o novo emprestimo
-    const novoEmprestimo = await EmprestimoService.save(value.data_emprestimo, value.data_devolucao, value.cliente, value.LivroId, value.FuncionarioId) 
-
-    if(novoEmprestimo) {
-      res.status(200).json(novoEmprestimo)
-    } else {
-      res.status(500).json({msg: "Erro ao cadastrar novo emprestimo"})
+      // Se a validação for bem-sucedida, salva o novo emprestimo
+      const novoEmprestimo = await EmprestimoService.save(value.data_emprestimo, value.data_devolucao, value.cliente, value.LivroId, value.FuncionarioId) 
+  
+      if(novoEmprestimo) {
+        res.status(200).json(novoEmprestimo)
+      } else {
+        res.status(500).json({msg: "Erro ao cadastrar novo emprestimo"})
+      }
     }
+
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
   }

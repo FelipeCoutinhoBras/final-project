@@ -44,16 +44,18 @@ router.post("/", validaToken.validaTokenFuncionario, async (req, res, next)=>{
       return res.status(400).json({msg: "Esse cliente já existe!" });
     } else if (loginCadastrado) {
       return res.status(400).json({msg: "Esse login já existe! Tente outro." });
+    } else {
+
+      // Se a validação for bem-sucedida, salva o novo cliente
+      let novocliente = await ClienteService.save(value.cpf, value.nascimento, value.nome, value.telefone, value.email, value.login, value.senha);
+    
+      if(novocliente) {
+        res.status(200).json(novocliente)
+      } else{
+        res.status(500).json({msg: "Erro ao cadastrar novo cliente"})
+      }
     }
   
-    // Se a validação for bem-sucedida, salva o novo cliente
-    let novocliente = await ClienteService.save(value.cpf, value.nascimento, value.nome, value.telefone, value.email, value.login, value.senha);
-  
-    if(novocliente) {
-      res.status(200).json(novocliente)
-    } else{
-      res.status(500).json({msg: "Erro ao cadastrar novo cliente"})
-    }
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
@@ -78,16 +80,18 @@ router.put("/:id", validaToken.validaTokenCliente, async(req, res, next) => {
 
     if (loginCadastrado) {
       return res.status(400).json({msg: "Esse login já existe! Tente outro." });
-    }
-  
-    // Se a validação for bem-sucedida, salva o cliente atualizado
-    let clienteAtualizado = await ClienteService.update(clienteId, value.cpf, value.nascimento, value.nome, value.telefone, value.email, value.login, value.senha);
-  
-    if (clienteAtualizado) {
-      res.status(200).json({msg: "Cliente atualizado com sucesso"})
     } else {
-      res.status(500).json({msg: "Erro ao atualizar o cliente"})
+
+      // Se a validação for bem-sucedida, salva o cliente atualizado
+      let clienteAtualizado = await ClienteService.update(clienteId, value.cpf, value.nascimento, value.nome, value.telefone, value.email, value.login, value.senha);
+    
+      if (clienteAtualizado) {
+        res.status(200).json({msg: "Cliente atualizado com sucesso"})
+      } else {
+        res.status(500).json({msg: "Erro ao atualizar o cliente"})
+      }
     }
+  
   } catch (err) {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
