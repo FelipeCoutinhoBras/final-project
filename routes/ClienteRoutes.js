@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
+const validaDados = require("../helpers/validaDados")
 const validaToken = require('../helpers/validaToken')
 const ClienteService = require('../servico/ClienteService')
 

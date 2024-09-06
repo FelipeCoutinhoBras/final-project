@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const validaDados = require("../helpers/validaDados")
 const EmprestimoService = require("../servico/EmprestimoService")
 
 router.get("/", async (req, res, next)=> {

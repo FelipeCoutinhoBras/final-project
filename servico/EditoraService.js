@@ -16,7 +16,7 @@ module.exports = {
   },
 
   update: async function(id, nome, telefone, email) {
-      // Verificar se a editora existe antes de atualizar
+  // Verificar se a editora existe antes de atualizar
   const editoraExistente = await EditoraModel.findByPk(id);
   if (!editoraExistente) {
     return null; // Retorna null se a editora não for encontrada
