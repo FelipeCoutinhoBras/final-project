@@ -4,14 +4,21 @@ const router = express.Router();
 const validaDados = require("../helpers/validaDados");
 const validaToken = require("../helpers/validaToken");
 const FuncionarioService = require("../servico/FuncionarioService");
+const paginationMiddleware = require('../helpers/pagination');
 
 //Rota para listar todos os funcionarios
-router.get("/", validaToken.validaTokenAdmin, async (req, res, next) => {
-  let funcionarios = await FuncionarioService.list();
-  if (funcionarios) {
-    res.status(200).json(funcionarios);
-  } else {
-    res.status(500).json({ msg: "Não há nenhum funcionário cadastrado" });
+router.get("/", validaToken.validaTokenAdmin, paginationMiddleware(FuncionarioService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const funcionarios = await FuncionarioService.list(limit, offset); // Passe os parâmetros de paginação
+
+    if (funcionarios) {
+      res.status(200).json(funcionarios);
+    } else {
+      res.status(404).json({ msg: "Nenhuma funcionario encontrado" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

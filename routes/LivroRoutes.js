@@ -4,15 +4,21 @@ const router = express.Router();
 const validaDados = require("../helpers/validaDados");
 const validaToken = require("../helpers/validaToken");
 const LivroService = require("../servico/LivroService");
+const paginationMiddleware = require('../helpers/pagination');
 
 // Rota para listar todos os livros
-router.get("/", validaToken.validaTokenCliente, async (req, res, next) => {
-  const livros = await LivroService.list();
+router.get("/", validaToken.validaTokenCliente, paginationMiddleware(LivroService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const livros = await LivroService.list(limit, offset); // Passe os parâmetros de paginação
 
-  if (livros) {
-    res.status(200).json(livros);
-  } else {
-    res.status(500).json({ msg: "Não há nenhum livro cadastrado ainda" });
+    if (livros) {
+      res.status(200).json(livros);
+    } else {
+      res.status(404).json({ msg: "Nenhuma livro encontrado" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

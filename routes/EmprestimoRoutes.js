@@ -4,15 +4,21 @@ const router = express.Router();
 const validaDados = require("../helpers/validaDados");
 const EmprestimoService = require("../servico/EmprestimoService");
 const LivroService = require("../servico/LivroService");
+const paginationMiddleware = require('../helpers/pagination');
 
 //Rota para listar todos os emprestimos
-router.get("/", async (req, res, next) => {
-  const livrosEmprestados = await EmprestimoService.list();
+router.get("/", paginationMiddleware(EmprestimoService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const emprestimos = await EmprestimoService.list(limit, offset); // Passe os parâmetros de paginação
 
-  if (livrosEmprestados) {
-    res.status(200).json(livrosEmprestados);
-  } else {
-    res.status(500).json({ msg: "Nenhum emprestimo localizado" });
+    if (emprestimos) {
+      res.status(200).json(emprestimos);
+    } else {
+      res.status(404).json({ msg: "Nenhuma emprestimo encontrado" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

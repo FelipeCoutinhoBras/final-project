@@ -3,14 +3,21 @@ const router = express.Router();
 
 const validaDados = require("../helpers/validaDados");
 const CategoriaService = require("../servico/CategoriaService");
+const paginationMiddleware = require('../helpers/pagination');
 
 // Rota para listar todos as categorias
-router.get("/", async (req, res, next) => {
-  let categorias = await CategoriaService.list();
-  if (categorias) {
-    res.status(200).json(categorias);
-  } else {
-    res.status(500).json({ msg: "Não há nenhuma categoria cadastrada" });
+router.get("/",paginationMiddleware(CategoriaService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const categorias = await CategoriaService.list(limit, offset); // Passe os parâmetros de paginação
+
+    if (categorias) {
+      res.status(200).json(categorias);
+    } else {
+      res.status(404).json({ msg: "Nenhuma categoria encontrada" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

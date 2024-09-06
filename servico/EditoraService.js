@@ -3,8 +3,11 @@ const EditoraModel = require("../model/Editora");
 
 module.exports = {
   // Lista todas as editoras
-  list: async function () {
-    const editoras = await EditoraModel.findAll();
+  list: async function (limit, offset) {
+    const editoras = await EditoraModel.findAll({
+      limit: limit,
+      offset: offset
+    });
     return editoras;
   },
 

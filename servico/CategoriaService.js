@@ -3,8 +3,11 @@ const CategoriaModel = require("../model/Categoria");
 
 module.exports = {
   // Lista todas as categorias
-  list: async function () {
-    const categorias = await CategoriaModel.findAll();
+  list: async function (limit, offset) {
+    const categorias = await CategoriaModel.findAll({
+      limit: limit,
+      offset: offset
+    });
     return categorias;
   },
 

@@ -3,15 +3,21 @@ const router = express.Router();
 
 const validaDados = require("../helpers/validaDados");
 const AutorService = require("../servico/AutorService");
+const paginationMiddleware = require('../helpers/pagination');
 
 // Rota para listar todos os autores
-router.get("/", async (req, res, next) => {
-  let autores = await AutorService.list();
+router.get("/", paginationMiddleware(AutorService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const autores = await AutorService.list(limit, offset); // Passe os parâmetros de paginação
 
-  if (autores) {
-    res.status(200).json(autores);
-  } else {
-    res.status(500).json({ msg: "Não há nenhum autor cadastrado" });
+    if (autores) {
+      res.status(200).json(autores);
+    } else {
+      res.status(404).json({ msg: "Nenhum autor encontrado" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

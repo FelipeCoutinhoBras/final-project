@@ -3,8 +3,12 @@ const LivroModel = require("../model/Livro");
 
 module.exports = {
   // Lista todos os livros
-  list: async function () {
-    return await LivroModel.findAll();
+  list: async function (limit, offset) {
+    const livros = await LivroModel.findAll({
+      limit: limit,
+      offset: offset
+    });
+    return livros;
   },
 
   // Adiciona um novo livro

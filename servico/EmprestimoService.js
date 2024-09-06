@@ -3,8 +3,11 @@ const EmprestimoModel = require("../model/Emprestimo");
 
 module.exports = {
   // Lista todos os empréstimos
-  list: async function () {
-    const emprestimos = await EmprestimoModel.findAll();
+  list: async function (limit, offset) {
+    const emprestimos = await EmprestimoModel.findAll({
+      limit: limit,
+      offset: offset
+    });
     return emprestimos;
   },
 

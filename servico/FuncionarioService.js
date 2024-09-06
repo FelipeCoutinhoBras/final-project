@@ -3,8 +3,12 @@ const FuncionarioModel = require("../model/Funcionario");
 
 module.exports = {
   // Lista todos os funcionários
-  list: async function () {
-    return await FuncionarioModel.findAll();
+  list: async function (limit, offset) {
+    const funcionarios = await FuncionarioModel.findAll({
+      limit: limit,
+      offset: offset
+    });
+    return funcionarios;
   },
 
   // Adiciona um novo funcionário

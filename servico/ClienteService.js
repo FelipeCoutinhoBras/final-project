@@ -3,8 +3,11 @@ const ClienteModel = require("../model/Cliente");
 
 module.exports = {
   // Lista todos os clientes
-  list: async function () {
-    const clientes = await ClienteModel.findAll();
+  list: async function (limit, offset) {
+    const clientes = await ClienteModel.findAll({
+      limit: limit,
+      offset: offset
+    });
     return clientes;
   },
 

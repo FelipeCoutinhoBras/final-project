@@ -3,8 +3,11 @@ const AutorModel = require("../model/Autor");
 
 module.exports = {
   // Lista todos os autores
-  list: async function () {
-    const autores = await AutorModel.findAll();
+  list: async function (limit, offset) {
+    const autores = await AutorModel.findAll({
+      limit: limit,
+      offset: offset
+    });
     return autores;
   },
 

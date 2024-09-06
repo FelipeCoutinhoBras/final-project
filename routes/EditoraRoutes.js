@@ -3,14 +3,21 @@ const router = express.Router();
 
 const validaDados = require("../helpers/validaDados");
 const EditoraService = require("../servico/EditoraService");
+const paginationMiddleware = require('../helpers/pagination');
 
 // Rota para listar todas as editoras
-router.get("/", async (req, res, next) => {
-  let editoras = await EditoraService.list();
-  if (editoras) {
-    res.status(200).json(editoras);
-  } else {
-    res.status(500).json({ msg: "Não há nenhuma editora cadastrada" });
+router.get("/", paginationMiddleware(EditoraService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const editoras = await EditoraService.list(limit, offset); // Passe os parâmetros de paginação
+
+    if (editoras) {
+      res.status(200).json(editoras);
+    } else {
+      res.status(404).json({ msg: "Nenhuma editora encontrada" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 

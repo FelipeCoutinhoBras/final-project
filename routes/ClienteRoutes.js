@@ -4,14 +4,21 @@ const router = express.Router();
 const validaDados = require("../helpers/validaDados");
 const validaToken = require("../helpers/validaToken");
 const ClienteService = require("../servico/ClienteService");
+const paginationMiddleware = require('../helpers/pagination');
 
 // Rota para listar todos os clientes
-router.get("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
-  let clientes = await ClienteService.list();
-  if (clientes) {
-    res.status(200).json(clientes);
-  } else {
-    res.status(500).json({ msg: "Não há nenhum cliente cadastrado" });
+router.get("/", validaToken.validaTokenFuncionario, paginationMiddleware(ClienteService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const clientes = await ClienteService.list(limit, offset); // Passe os parâmetros de paginação
+
+    if (clientes) {
+      res.status(200).json(clientes);
+    } else {
+      res.status(404).json({ msg: "Nenhum cliente encontrado" });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 
