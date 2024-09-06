@@ -26,27 +26,54 @@ router.get("/:id", validaToken.validaTokenCliente, async (req, res, next)=>{
 })
 
 router.post("/", validaToken.validaTokenFuncionario, async (req, res, next)=>{
-  const {titulo, ano, descricao, estado} = req.body
+  try {
+    const {titulo, ano, descricao, estado} = req.body
 
-  const livro = await LivroService.save(titulo, ano, descricao, estado)
-  
-  if(livro) {
-    res.status(200).json(livro)
-  } else {
-    res.status(500).json({msg: "Erro ao cadastrar novo livro!"})
+    // Validação dos dados usando Joi
+    const { error, value } = validaDados.schemaLivro.validate({ titulo, ano, descricao, estado});
+
+    // Se a validação falhar, retorna um erro
+    if (error) {
+      return res.status(400).json({ msg: error.details[0].message });
+    }
+
+    // Se a validação for bem-sucedida, salva o novo livro
+    const livro = await LivroService.save( value.titulo, value.ano, value.descricao, value.estado)
+    
+    if(livro) {
+      res.status(200).json(livro)
+    } else {
+      res.status(500).json({msg: "Erro ao cadastrar novo livro!"})
+    }
+  } catch (err) {
+    next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
-})
+});
 
 router.put("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=>{
-  const livroId = req.params.id
-  const {titulo, ano, descricao, estado} = req.body
+  try {
+    const livroId = req.params.id
+    const {titulo, ano, descricao, estado} = req.body
 
-  const livroAtualizado = await LivroService.update(livroId,titulo, ano, descricao, estado)
+    // Validação dos dados usando Joi
+    const { error, value } = validaDados.schemaLivro.validate({ titulo, ano, descricao, estado});
 
-  if (livroAtualizado) {
-    res.status(200).json({msg: "Livro atualizado com sucesso!"})
-  } else {
-    res.status(500).json({msg: "Erro ao atualizar o livro"})
+    // Se a validação falhar, retorna um erro
+     if (error) {
+      return res.status(400).json({ msg: error.details[0].message });
+    }
+
+     // Se a validação for bem-sucedida, salva o livro atualizado
+     const livroAtualizado = await LivroService.update(livroId, value.titulo, value.ano, value.descricao, value.estado)
+
+     if (livroAtualizado) {
+       res.status(200).json({msg: "Livro atualizado com sucesso!"})
+     } else {
+       res.status(500).json({msg: "Erro ao atualizar o livro"})
+     }
+  } catch (error) {
+    // Encaminha o erro para o middleware de tratamento de erros
+    next(err);          
   }
 })
 

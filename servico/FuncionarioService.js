@@ -20,13 +20,25 @@ module.exports = {
   },
 
   update: async function (id, cpf, nome, telefone, login, senha, isAdmin) {
-    return await FuncionarioModel.update({
-      cpf: cpf,
-      nome: nome,
-      telefone: telefone,
-      login: login,
-      senha: senha,
-      isAdmin: isAdmin}, {where: {id: id}})
+    // Verificar se o funcionario existe antes de atualizar
+    const funcionarioExistente = await FuncionarioModel.findByPk(id);
+    if (!funcionarioExistente) {
+      return null; // Retorna null se o funcionario não for encontrado
+    }
+
+    // Atualiza o funcionario se ele for encontrado
+    await FuncionarioModel.update(
+      {
+        cpf: cpf,
+        nome: nome,
+        telefone: telefone,
+        login: login,
+        senha: senha,
+        isAdmin: isAdmin}, {where: { id: id}}
+    );
+
+    // Retorna o funcionario atualizado
+    return await FuncionarioModel.findByPk(id);
   },
 
   delete: async function (id) {

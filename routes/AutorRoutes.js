@@ -35,7 +35,7 @@ router.post("/", async(req, res, next) => {
       return res.status(400).json({ msg: error.details[0].message });
     }
   
-    // Se a validação for bem-sucedida, salva o nova autor
+    // Se a validação for bem-sucedida, salva o novo autor
     let novoautor = await AutorService.save(value.nome, value.pseudonimo);
   
     if (novoautor) {
@@ -61,6 +61,7 @@ router.put("/:id", async(req, res, next) => {
       return res.status(400).json({msg: error.details[0].message})
     }
   
+    // Se a validação for bem-sucedida, salva o novo autor
     let editoraAtualizada = await AutorService.update(autorId, value.nome, value.pseudonimo)
   
     if (editoraAtualizada) {
@@ -73,14 +74,6 @@ router.put("/:id", async(req, res, next) => {
   }
 })
   
-
-
-
-
-
-
-
-
 router.delete("/:id", async(req, res, next) => {
   let autorId = req.params.id
 

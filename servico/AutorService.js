@@ -22,7 +22,7 @@ module.exports = {
     return null; // Retorna null se o autor não for encontrado
   }
 
-  // Atualiza o autor se ela for encontrado
+  // Atualiza o autor se ele for encontrado
   await AutorModel.update(
     {
       nome: nome,
@@ -31,7 +31,7 @@ module.exports = {
     { where: { id: id }}
   );
 
-  // Retorna o autor atualizada
+  // Retorna o autor atualizado
   return await AutorModel.findByPk(id);
   },
 

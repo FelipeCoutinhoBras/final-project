@@ -21,7 +21,15 @@ module.exports = {
   },
 
   update: async function(id, cpf, nascimento, nome, telefone, email, login, senha) {
-    return await ClienteModel.update({
+  // Verificar se o cliente existe antes de atualizar
+  const clienteExistente = await ClienteModel.findByPk(id);
+  if (!clienteExistente) {
+    return null; // Retorna null se o autor não for encontrado
+  }
+
+  // Atualiza o cliente se ele for encontrado
+  await ClienteModel.update(
+    {
       cpf: cpf,
       nascimento: nascimento, 
       nome: nome,
@@ -29,9 +37,12 @@ module.exports = {
       email: email,
       login: login, 
       senha: senha}, {where: { id: id}}
-    )
+  );
+
+  // Retorna o cliente atualizado
+  return await ClienteModel.findByPk(id);
   },
-  
+
   delete: async function(id) {
     return await ClienteModel.destroy({
       where: { id: id}

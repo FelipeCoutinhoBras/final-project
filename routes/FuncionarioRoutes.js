@@ -24,27 +24,53 @@ router.get("/:id", validaToken.validaTokenAdmin, async (req, res, next)=>{
 });
 
 router.post("/", validaToken.validaTokenAdmin, async (req, res, next)=>{
-  let {cpf, nome, telefone, login, senha, isAdmin} = req.body
+  try {
+    let {cpf, nome, telefone, login, senha, isAdmin} = req.body
 
-  let novofuncionario = await FuncionarioService.save(cpf, nome, telefone, login, senha, isAdmin)
+    // Validação dos dados usando Joi
+    const { error, value } = validaDados.schemaFuncionario.validate({ cpf, nome, telefone, login, senha, isAdmin});
+  
+    // Se a validação falhar, retorna um erro
+    if (error) {
+      return res.status(400).json({ msg: error.details[0].message });
+    }
+  
+    // Se a validação for bem-sucedida, salva o novo funcionario
+    let novofuncionario = await FuncionarioService.save(value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
 
-  if (novofuncionario) {
-    res.status(200).json(novofuncionario)
-  } else {
-    res.status(500).json({msg: "Erro ao cadastrar novo funcionário"})
+    if (novofuncionario) {
+      res.status(200).json(novofuncionario)
+    } else {
+      res.status(500).json({msg: "Erro ao cadastrar novo funcionário"})
+    }
+  } catch (err) {
+    next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
 });
 
 router.put("/:id", validaToken.validaTokenFuncionario, async (req, res, next)=>{
-  let funcionarioId = req.params.id
-  let {cpf, nome, telefone, login, senha, isAdmin} = req.body
+  try {
+    let funcionarioId = req.params.id
+    let {cpf, nome, telefone, login, senha, isAdmin} = req.body
+  
+    // Validação dos dados usando Joi
+    const {error, value} = validaDados.schemaFuncionario.validate({ cpf, nome, telefone, login, senha, isAdmin });
+  
+    // Se a validação falhar, retorna um erro
+    if (error) {
+      return res.status(400).json({msg: error.details[0].message})
+    }
+  
+    // Se a validação for bem-sucedida, salva o funcionario atualizado
+    let funcionarioAtualizado = await FuncionarioService.update(funcionarioId, value.cpf, value.nome, value.telefone, value.login, value.senha, value.isAdmin)
 
-  let funcionarioAtualizado = await FuncionarioService.update(funcionarioId, cpf, nome, telefone, login, senha, isAdmin)
-
-  if (funcionarioAtualizado) {
-    res.status(200).json({msg: "Funcionário atualizado com sucesso"})
-  } else {
-    res.status(500).json({msg: "Erro ao atualizar o funcionário"})
+    if (funcionarioAtualizado) {
+      res.status(200).json({msg: "Funcionário atualizado com sucesso"})
+    } else {
+      res.status(500).json({msg: "Erro ao atualizar o funcionário"})
+    }
+  } catch (err) {
+    next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
 })
 

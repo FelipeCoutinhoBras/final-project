@@ -14,11 +14,25 @@ module.exports = {
     return categoriaObj
   },
 
-  update: async function (id, categoria) {
-    return await CategoriaModel.update({ tipo: categoria }, {where: {
-      id: id
-    }})
+  update: async function (id, tipo) {
+    // Verificar se a categoria existe antes de atualizar
+    const categoriaExistente = await CategoriaModel.findByPk(id);
+    if (!categoriaExistente) {
+      return null; // Retorna null se a categoria não for encontrada
+    }
+  
+    // Atualiza a categoria se ela for encontrada
+    await CategoriaModel.update(
+      {
+        tipo: tipo,
+      }, 
+      { where: { id: id }}
+    );
+  
+    // Retorna a categoria atualizada
+    return await CategoriaModel.findByPk(id);
   },
+
 
   delete: async function (id) {
     return await CategoriaModel.destroy({where: {

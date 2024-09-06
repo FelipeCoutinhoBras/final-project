@@ -22,7 +22,7 @@ const schemaCliente = Joi.object({
     "string.pattern.base": "O CPF deve conter 11 números.",
     "any.required": "O CPF é obrigatório."
   }),
-  nascimento: Joi.date().required().messages({
+  nascimento: Joi.date().required().iso().messages({
     "date.base": "A data de nascimento deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data de nascimento é obrigatória."
   }),
@@ -42,8 +42,8 @@ const schemaCliente = Joi.object({
     "string.email": "O login deve ser válido (ex: teste@teste.com).",
     "any.required": "O login é obrigatório."
   }),
-  senha: Joi.string().alphanum().min(8).required().messages({
-    "string.min": "A senha precisa ter no mínimo 8 caracteres.",
+  senha: Joi.string().pattern(/^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)[\d\w\W]{8,}$/).required().messages({
+    "string.pattern.base": "A senha deve deve conter 8 caracteres no mínimo, ter ao menos 1 caracter especial e 1 número.",
     "any.required": "A senha é obrigatória."
   }),
 });
@@ -64,11 +64,11 @@ const schemaEditora = Joi.object({
 });
 
 const schemaEmprestimo = Joi.object({
-  data_emprestimo: Joi.date().required().messages({
+  data_emprestimo: Joi.date().iso().required().messages({
     "date.base": "A data do empréstimo deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data do empréstimo é obrigatória."
   }),
-  data_devolucao: Joi.date().required().messages({
+  data_devolucao: Joi.date().iso().required().messages({
     "date.base": "A data de devolução deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data de devolução é obrigatória."
   }),
@@ -103,8 +103,8 @@ const schemaFuncionario = Joi.object({
     "string.email": "O login deve ser válido (ex: teste@teste.com).",
     "any.required": "O login é obrigatório."
   }),
-  senha: Joi.string().alphanum().min(8).required().messages({
-    "string.min": "A senha precisa ter no mínimo 8 caracteres.",
+  senha: Joi.string().pattern(/^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)[\d\w\W]{8,}$/).required().messages({
+    "string.pattern.base": "A senha deve deve conter 8 caracteres no mínimo, ter ao menos 1 caracter especial e 1 número.",
     "any.required": "A senha é obrigatória."
   }),
   isAdmin: Joi.boolean().messages({
