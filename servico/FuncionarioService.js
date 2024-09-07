@@ -14,12 +14,12 @@ module.exports = {
   // Adiciona um novo funcionário
   save: async function (cpf, nome, telefone, login, senha, isAdmin) {
     return await FuncionarioModel.create({
-      cpf,
-      nome,
-      telefone,
-      login,
-      senha,
-      isAdmin,
+      cpf: cpf,
+      nome: nome,
+      telefone: telefone,
+      login: login,
+      senha: senha,
+      isAdmin: isAdmin
     });
   },
 
@@ -31,7 +31,12 @@ module.exports = {
     }
 
     await FuncionarioModel.update(
-      { cpf, nome, telefone, login, senha, isAdmin },
+      { cpf: cpf,
+        nome: nome,
+        telefone: telefone,
+        login: login,
+        senha: senha,
+        isAdmin: isAdmin},
       { where: { id } }
     );
 

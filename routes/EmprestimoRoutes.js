@@ -72,6 +72,12 @@ router.post("/", async (req, res, next) => {
 
       if (novoEmprestimo) {
         res.status(200).json(novoEmprestimo);
+
+        // Atualiza o estado do livro para "emprestado"
+        await LivroModel.update(
+          { estado: "emprestado" }, // Novo estado do livro
+          { where: { id: value.LivroId } } // Atualiza o livro específico pelo ID
+        );
       } else {
         res.status(500).json({ msg: "Erro ao cadastrar novo emprestimo" });
       }
@@ -80,6 +86,8 @@ router.post("/", async (req, res, next) => {
     next(err); // Encaminha o erro para o middleware de tratamento de erros
   }
 });
+
+
 
 //Rota para atualizar um livro pelo seu ID
 router.put("/:id", async (req, res, next) => {

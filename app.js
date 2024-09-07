@@ -17,6 +17,8 @@ const funcionarioRoutes = require('./routes/FuncionarioRoutes');
 const livroRoutes = require('./routes/LivroRoutes');
 const emprestimoRoutes = require('./routes/EmprestimoRoutes');
 const validaToken = require("./helpers/validaToken")
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 
 dotenv.config()
 
@@ -36,6 +38,7 @@ app.use('/editora', validaToken.validaTokenFuncionario, editoraRoutes);
 app.use('/funcionario', funcionarioRoutes)
 app.use('/livro', livroRoutes)
 app.use('/emprestimo', validaToken.validaTokenFuncionario, emprestimoRoutes)
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

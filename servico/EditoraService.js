@@ -28,7 +28,7 @@ module.exports = {
       return null; // Retorna null se a editora não for encontrada
     }
 
-    await EditoraModel.update({ nome, telefone, email }, { where: { id: id } });
+    await EditoraModel.update({ nome: nome, telefone: telefone, email: email }, { where: { id: id } });
 
     return await EditoraModel.findByPk(id); // Retorna a editora atualizada
   },

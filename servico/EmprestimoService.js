@@ -20,11 +20,11 @@ module.exports = {
     FuncionarioId
   ) {
     const novoEmprestimo = await EmprestimoModel.create({
-      data_emprestimo,
-      data_devolucao,
-      cliente,
-      LivroId,
-      FuncionarioId,
+      data_emprestimo: data_emprestimo,
+      data_devolucao: data_devolucao,
+      cliente: cliente,
+      LivroId: LivroId,
+      FuncionarioId: FuncionarioId
     });
     return novoEmprestimo;
   },
@@ -44,7 +44,11 @@ module.exports = {
     }
 
     await EmprestimoModel.update(
-      { data_emprestimo, data_devolucao, cliente, LivroId, FuncionarioId },
+      { data_emprestimo: data_emprestimo,
+        data_devolucao: data_devolucao,
+        cliente: cliente,
+        LivroId: LivroId,
+        FuncionarioId: FuncionarioId},
       { where: { id } }
     );
 

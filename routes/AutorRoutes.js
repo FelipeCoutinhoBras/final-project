@@ -34,12 +34,13 @@ router.get("/:id", async (req, res, next) => {
 // Rota para criar um novo autor
 router.post("/", async (req, res, next) => {
   try {
-    const { nome, pseudonimo } = req.body;
+    const { nome, pseudonimo, livro } = req.body;
 
     // Validação dos dados usando Joi
     const { error, value } = validaDados.schemaAutor.validate({
       nome,
       pseudonimo,
+      livro
     });
 
     // Se a validação falhar, retorna um erro
@@ -50,14 +51,15 @@ router.post("/", async (req, res, next) => {
 
     const autorCadastrado = await AutorService.getByName(
       value.nome,
-      value.pseudonimo
+      value.pseudonimo,
+      value.livroId
     );
 
     if (autorCadastrado) {
       res.status(400).json({ msg: "Esse autor já existe!" });
     } else {
       // Se a validação for bem-sucedida, e o autor não existir, cadastra o novo autor
-      let novoautor = await AutorService.save(value.nome, value.pseudonimo);
+      let novoautor = await AutorService.save(value.nome, value.pseudonimo, value.livro);
 
       if (novoautor) {
         res.status(200).json(novoautor);
@@ -74,12 +76,13 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     let autorId = req.params.id;
-    let { nome, pseudonimo } = req.body;
+    let { nome, pseudonimo, livro } = req.body;
 
     // Validação dos dados usando Joi
     const { error, value } = validaDados.schemaAutor.validate({
       nome,
       pseudonimo,
+      livro
     });
 
     // Se a validação falhar, retorna um erro
@@ -91,7 +94,8 @@ router.put("/:id", async (req, res, next) => {
 
     const autorCadastrado = await AutorService.getByName(
       value.nome,
-      value.pseudonimo
+      value.pseudonimo,
+      value.livro
     );
 
     if (autorCadastrado) {
@@ -103,7 +107,8 @@ router.put("/:id", async (req, res, next) => {
       let editoraAtualizada = await AutorService.update(
         autorId,
         value.nome,
-        value.pseudonimo
+        value.pseudonimo,
+        value.livro
       );
 
       if (editoraAtualizada) {

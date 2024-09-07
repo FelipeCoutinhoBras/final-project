@@ -58,53 +58,6 @@ router.post("/login", async (req, res, next) => {
 // Rota para popular as tabelas
 router.get("/install", async (req, res) => {
   try {
-    // Populando a tabela Livro
-    await Livro.bulkCreate(
-      [
-        {
-          titulo: "E assim que acaba",
-          ano: "2000",
-          descricao: "As escolhas corretas nas situações mais difíceis",
-          estado: "disponivel",
-        },
-        {
-          titulo: "A seleção",
-          ano: "2001",
-          descricao:
-            "Desigualdade social e como algumas castas tem muito e outras tão poucos.",
-          estado: "disponivel",
-        },
-        {
-          titulo: "Mil beijos de garoto",
-          ano: "2002",
-          descricao: "O amor supera o tempo.",
-          estado: "disponivel",
-        },
-        {
-          titulo: "Até o verão terminar",
-          ano: "2003",
-          descricao: "A paixão que salvou uma vida.",
-          estado: "disponivel",
-        },
-        {
-          titulo: "Pequena coreografia do adeus",
-          ano: "2004",
-          descricao: "Os pais que acabam com a vida de sua filha.",
-          estado: "disponivel",
-        },
-      ],
-      { returning: true }
-    );
-
-    // Populando a tabela Autor
-    await Autor.bulkCreate([
-      { nome: "Collen Houver", pseudonimo: "Houver" },
-      { nome: "Tillie Cole", pseudonimo: "Colezinha" },
-      { nome: "Aline Bei", pseudonimo: "Velentins" },
-      { nome: "Machado de Assis", pseudonimo: "Machadinho" },
-      { nome: "William Shakespeare", pseudonimo: "Shakespeare" },
-    ]);
-
     // Populando a tabela Categoria
     await Categoria.bulkCreate([
       { tipo: "Ficção" },
@@ -113,6 +66,49 @@ router.get("/install", async (req, res) => {
       { tipo: "Romance" },
       { tipo: "História" },
     ]);
+
+    // Populando a tabela Livro
+    await Livro.bulkCreate(
+      [
+        {
+          titulo: "E assim que acaba",
+          ano: "2000",
+          descricao: "As escolhas corretas nas situações mais difíceis",
+          estado: "disponivel",
+          categoria: 1
+        },
+        {
+          titulo: "A seleção",
+          ano: "2001",
+          descricao:
+            "Desigualdade social e como algumas castas tem muito e outras tão poucos.",
+          estado: "disponivel",
+          categoria: 1
+        },
+        {
+          titulo: "Mil beijos de garoto",
+          ano: "2002",
+          descricao: "O amor supera o tempo.",
+          estado: "disponivel",
+          categoria: 2
+        },
+        {
+          titulo: "Até o verão terminar",
+          ano: "2003",
+          descricao: "A paixão que salvou uma vida.",
+          estado: "disponivel",
+          categoria: 3
+        },
+        {
+          titulo: "Pequena coreografia do adeus",
+          ano: "2004",
+          descricao: "Os pais que acabam com a vida de sua filha.",
+          estado: "disponivel",
+          categoria: 5
+        },
+      ],
+      { returning: true }
+    );
 
     // Populando a tabela Cliente
     await Cliente.bulkCreate([
@@ -223,6 +219,15 @@ router.get("/install", async (req, res) => {
         isAdmin: false,
       },
     ]);
+    // Populando a tabela Autor
+    await Autor.bulkCreate([
+      { nome: "Collen Houver", pseudonimo: "Houver", livro: 1 },
+      { nome: "Tillie Cole", pseudonimo: "Colezinha", livro: 2 },
+      { nome: "Aline Bei", pseudonimo: "Velentins", livro: 3 },
+      { nome: "Machado de Assis", pseudonimo: "Machadinho", livro: 4 },
+      { nome: "William Shakespeare", pseudonimo: "Shakespeare", livro: 5 },
+    ]);
+
 
     // Populando a tabela Emprestimo (Assumindo que ClienteId, LivroId, FuncionarioId são chaves estrangeiras)
     await Emprestimo.bulkCreate([

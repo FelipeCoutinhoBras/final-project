@@ -101,7 +101,7 @@ const schemaEmprestimo = Joi.object({
     "date.base": "A data do empréstimo deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data do empréstimo é obrigatória.",
   }),
-  data_devolucao: Joi.date().iso().required().messages({
+  data_devolucao: Joi.date().iso().messages({
     "date.base": "A data de devolução deve estar no formato (AAAA-MM-DD).",
     "any.required": "A data de devolução é obrigatória.",
   }),

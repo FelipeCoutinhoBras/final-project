@@ -22,6 +22,21 @@ router.get("/", validaToken.validaTokenCliente, paginationMiddleware(LivroServic
   }
 });
 
+router.get("/emprestimo", validaToken.validaTokenCliente, paginationMiddleware(LivroService.list), async (req, res, next) => {
+  try {
+    const { limit, offset } = req.pagination;
+    const livros = await LivroService.listEmprestados(limit, offset); // Passando os parâmetros de paginação
+
+    if (livros.length > 0) {
+      res.status(200).json(livros);
+    } else {
+      res.status(404).json({ msg: "Nenhum livro emprestado localizado" });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Rota para buscar um livro pelo ID
 router.get("/:id", validaToken.validaTokenCliente, async (req, res, next) => {
   const livro = await LivroService.getById(req.params.id);
@@ -36,7 +51,7 @@ router.get("/:id", validaToken.validaTokenCliente, async (req, res, next) => {
 // Rota para criar um novo livro
 router.post("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
   try {
-    const { titulo, ano, descricao, estado } = req.body;
+    const { titulo, ano, descricao, estado, autor, categoria } = req.body;
 
     // Validação dos dados usando Joi
     const { error, value } = validaDados.schemaLivro.validate({
@@ -44,6 +59,8 @@ router.post("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
       ano,
       descricao,
       estado,
+      autor,
+      categoria,
     });
 
     // Se a validação falhar, retorna um erro
@@ -56,7 +73,9 @@ router.post("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
       value.titulo,
       value.ano,
       value.descricao,
-      value.estado
+      value.estado.
+      value.autor,
+      value.categoria,
     );
 
     if (livro) {
@@ -76,7 +95,7 @@ router.put(
   async (req, res, next) => {
     try {
       const livroId = req.params.id;
-      const { titulo, ano, descricao, estado } = req.body;
+      const { titulo, ano, descricao, estado, autor, categoria } = req.body;
 
       // Validação dos dados usando Joi
       const { error, value } = validaDados.schemaLivro.validate({
@@ -84,6 +103,8 @@ router.put(
         ano,
         descricao,
         estado,
+        autor,
+        categoria
       });
 
       // Se a validação falhar, retorna um erro
@@ -97,7 +118,9 @@ router.put(
         value.titulo,
         value.ano,
         value.descricao,
-        value.estado
+        value.estado,
+        value.autor,
+        value.categoria,
       );
 
       if (livroAtualizado) {

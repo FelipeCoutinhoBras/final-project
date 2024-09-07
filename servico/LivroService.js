@@ -11,18 +11,29 @@ module.exports = {
     return livros;
   },
 
+  listEmprestados: async function(limit, offset) {
+    const livros = await LivroModel.findAll({
+      limit: limit,
+      offset: offset,
+      where: { estado: "emprestado" } 
+    });
+    return livros;
+  },
+
   // Adiciona um novo livro
-  save: async function (titulo, ano, descricao, estado) {
+  save: async function (titulo, ano, descricao, estado, autor, categoria) {
     return await LivroModel.create({
-      titulo,
-      ano,
-      descricao,
-      estado,
+      titulo: titulo,
+      ano: ano,
+      descricao: descricao,
+      estado: estado,
+      autor: autor, 
+      categoria: categoria
     });
   },
 
   // Atualiza um livro existente
-  update: async function (id, titulo, ano, descricao, estado) {
+  update: async function (id, titulo, ano, descricao, estado, autor, categoria) {
     const livroExistente = await LivroModel.findByPk(id);
     if (!livroExistente) {
       return null; // Retorna null se o livro não for encontrado
@@ -30,10 +41,12 @@ module.exports = {
 
     await LivroModel.update(
       {
-        titulo,
-        ano,
-        descricao,
-        estado,
+        titulo: titulo,
+        ano: ano,
+        descricao: descricao,
+        estado: estado,
+        autor: autor, 
+        categoria: categoria
       },
       {
         where: { id },

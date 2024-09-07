@@ -14,7 +14,6 @@ const EmprestimoModel = sequelize.define("Emprestimo", {
   },
   data_devolucao: {
     type: DataTypes.DATE,
-    allowNull: false,
   },
 });
 

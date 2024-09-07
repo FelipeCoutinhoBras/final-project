@@ -3,6 +3,10 @@ const AutorModel = require("../model/Autor");
 
 module.exports = {
   // Lista todos os autores
+  countTable: async function() {
+    const autores = await AutorModel
+  },
+  
   list: async function (limit, offset) {
     const autores = await AutorModel.findAll({
       limit: limit,
@@ -12,23 +16,26 @@ module.exports = {
   },
 
   // Cria um novo autor
-  save: async function (nome, pseudonimo) {
+  save: async function (nome, pseudonimo, livro) {
     const autor = await AutorModel.create({
       nome: nome,
       pseudonimo: pseudonimo,
+      livro: livro
     });
     return autor;
   },
 
   // Atualiza um autor existente
-  update: async function (id, nome, pseudonimo) {
+  update: async function (id, nome, pseudonimo, livro) {
     const autorExistente = await AutorModel.findByPk(id);
     if (!autorExistente) {
       return null; // Retorna null se o autor não for encontrado
     }
 
     await AutorModel.update(
-      { nome: nome, pseudonimo: pseudonimo },
+      { nome: nome,
+        pseudonimo: pseudonimo,
+        livro: livro},
       { where: { id: id } }
     );
 

@@ -42,7 +42,7 @@ module.exports = {
     }
 
     await ClienteModel.update(
-      { cpf, nascimento, nome, telefone, email, login, senha },
+      { cpf: cpf, nascimento: nascimento, nome: nome, telefone: telefone, email: email, login: login, senha: senha },
       { where: { id: id } }
     );
 
