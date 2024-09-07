@@ -2,15 +2,10 @@ const { DataTypes, Op } = require("sequelize");
 const AutorModel = require("../model/Autor");
 
 module.exports = {
-  // Lista todos os autores
-  countTable: async function() {
-    const autores = await AutorModel
-  },
-  
   list: async function (limit, offset) {
     const autores = await AutorModel.findAll({
       limit: limit,
-      offset: offset
+      offset: offset,
     });
     return autores;
   },
@@ -20,7 +15,7 @@ module.exports = {
     const autor = await AutorModel.create({
       nome: nome,
       pseudonimo: pseudonimo,
-      livro: livro
+      livro: livro,
     });
     return autor;
   },
@@ -33,9 +28,7 @@ module.exports = {
     }
 
     await AutorModel.update(
-      { nome: nome,
-        pseudonimo: pseudonimo,
-        livro: livro},
+      { nome: nome, pseudonimo: pseudonimo, livro: livro },
       { where: { id: id } }
     );
 
@@ -53,9 +46,18 @@ module.exports = {
   },
 
   // Obtém um autor pelo nome (com pesquisa parcial)
-  getByName: async function (nome) {
+  getByName: async function (nome, livro) {
     return await AutorModel.findOne({
-      where: { nome: { [Op.like]: "%" + nome + "%" } },
+      where: {
+        [Op.or]: [
+          {
+            nome: {
+              [Op.like]: `%${nome}%`,
+            },
+          },
+          { livro: livro },
+        ],
+      },
     });
   },
 };
