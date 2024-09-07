@@ -14,6 +14,9 @@ const schemaAutor = Joi.object({
     .messages({
       "string.pattern.base": "O pseudônimo precisa ter no mínimo 3 letras.",
     }),
+  livro: Joi.number().integer().messages({
+    "number.base": "O id do livro deve ser um número.",
+  }),
 });
 
 // Validação para Categoria
@@ -184,6 +187,12 @@ const schemaLivro = Joi.object({
   estado: Joi.string().valid("disponivel", "emprestado").required().messages({
     "any.only": "O estado do livro deve ser 'disponivel' ou 'emprestado'.",
     "any.required": "O estado do livro é obrigatório.",
+  }),
+  autor: Joi.number().integer().messages({
+    "number.base": "O id do autor deve ser um número.",
+  }),
+  categoria: Joi.number().integer().messages({
+    "number.base": "O id do categoria deve ser um número.",
   }),
 });
 
