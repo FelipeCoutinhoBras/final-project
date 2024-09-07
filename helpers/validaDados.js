@@ -179,9 +179,8 @@ const schemaLivro = Joi.object({
       "string.pattern.base": "O ano do livro deve ser numérico.",
       "any.required": "O ano do livro é obrigatório.",
     }),
-  descricao: Joi.string().alphanum().min(3).required().messages({
-    "string.alphanum": "A descrição precisa conter apenas letras e números.",
-    "string.min": "A descrição precisa ter no mínimo 3 caracteres.",
+  descricao: Joi.string().min(3).max(250).required().messages({
+    "string.min": "A descrição deve ter no mínimo 3 caracteres.",
     "any.required": "A descrição é obrigatória.",
   }),
   estado: Joi.string().valid("disponivel", "emprestado").required().messages({

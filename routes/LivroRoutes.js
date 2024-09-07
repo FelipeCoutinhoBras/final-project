@@ -68,14 +68,20 @@ router.post("/", validaToken.validaTokenFuncionario, async (req, res, next) => {
       return res.status(400).json({ msg: error.details[0].message });
     }
 
+    // Verifica se o título já existe
+    const livroExistente = await LivroService.getByName(value.titulo);
+    if (livroExistente) {
+      return res.status(400).json({ msg: "Já existe um livro com esse título." });
+    }
+
     // Se a validação for bem-sucedida, salva o novo livro
     const livro = await LivroService.save(
       value.titulo,
       value.ano,
       value.descricao,
-      value.estado.
+      value.estado,
       value.autor,
-      value.categoria,
+      value.categoria
     );
 
     if (livro) {
@@ -112,6 +118,12 @@ router.put(
         return res.status(400).json({ msg: error.details[0].message });
       }
 
+      // Verifica se o título já existe (exceto para o livro atual)
+      const livroExistente = await LivroService.getByName(value.titulo);
+      if (livroExistente && livroExistente.id !== livroId) {
+        return res.status(400).json({ msg: "Já existe um livro com esse título." });
+      }
+
       // Se a validação for bem-sucedida, salva o livro atualizado
       const livroAtualizado = await LivroService.update(
         livroId,
@@ -120,7 +132,7 @@ router.put(
         value.descricao,
         value.estado,
         value.autor,
-        value.categoria,
+        value.categoria
       );
 
       if (livroAtualizado) {
@@ -128,12 +140,12 @@ router.put(
       } else {
         res.status(500).json({ msg: "Erro ao atualizar o livro" });
       }
-    } catch (error) {
-      // Encaminha o erro para o middleware de tratamento de erros
-      next(err);
+    } catch (err) {
+      next(err); // Encaminha o erro para o middleware de tratamento de erros
     }
   }
 );
+
 
 // Rota para atualizar o deletar pelo ID
 router.delete(
